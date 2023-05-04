@@ -1,4 +1,5 @@
 {
+  "type": "module",
   "dependencies": {
     "bcrypt": "^5.1.0",
     "cors": "^2.8.5",
@@ -8,5 +9,8 @@
   },
   "devDependencies": {
     "nodemon": "^2.0.22"
+  },
+  "scripts": {
+    "start": "nodemon src/index.js"
   }
 }
