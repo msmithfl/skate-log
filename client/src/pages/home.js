@@ -23,7 +23,6 @@ const Home = () => {
           `http://localhost:3001/tricks/completedTricks/ids/${userID}`
         );
         setCompletedTricks(response.data.completedTricks);
-        console.log(completedTricks);
       } catch (err) {
         console.error(err);
       }
@@ -56,6 +55,8 @@ const Home = () => {
     }
   };
 
+  const isTrickSaved = (id) => completedTricks.includes(id);
+
   const strikeoutText = () => {
     console.log("FIRED");
   };
@@ -73,6 +74,7 @@ const Home = () => {
                   saveTrick(event, trick._id);
                   strikeoutText();
                 }}
+                defaultChecked={isTrickSaved(trick._id)}
               />
               <h2 className="text-xl">{trick.name}</h2>
               <i className="fa-regular fa-heart"></i>
