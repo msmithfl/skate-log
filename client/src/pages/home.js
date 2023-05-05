@@ -8,6 +8,7 @@ const Home = () => {
   const [completedTricks, setCompletedTricks] = useState([]);
   const [cookies, _] = useCookies(["access_token"]);
   const [checkedList, setCheckedList] = useState([]);
+  const [isSolid, setIsSolid] = useState(false);
 
   // populate checkedList with default values based on isTrickSaved
   useEffect(() => {
@@ -71,7 +72,10 @@ const Home = () => {
   };
 
   const isTrickSaved = (id) => completedTricks.includes(id);
-  let counter = 0;
+
+  const toggleHeart = () => {
+    setIsSolid(!isSolid);
+  };
 
   return (
     <div>
@@ -99,7 +103,13 @@ const Home = () => {
               >
                 {trick.name}
               </h2>
-              <i className="fa-regular fa-heart"></i>
+              <div onClick={toggleHeart}>
+                <i
+                  className={`fa-regular ${
+                    isSolid ? "fas fa-star" : "far fa-star"
+                  }`}
+                ></i>
+              </div>
             </div>
           </li>
         ))}
