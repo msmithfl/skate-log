@@ -71,6 +71,18 @@ const Home = () => {
     }
   };
 
+  const wishlistTrick = async (trickID) => {
+    try {
+      await axios.put("http://localhost:3001/tricks/wishlist", {
+        trickID,
+        userID,
+      });
+      console.log(trickID);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
   const isTrickSaved = (id) => completedTricks.includes(id);
 
   const toggleHeart = () => {
@@ -103,7 +115,7 @@ const Home = () => {
               >
                 {trick.name}
               </h2>
-              <div onClick={toggleHeart}>
+              <div onClick={() => wishlistTrick(trick._id)}>
                 <i
                   className={`fa-regular ${
                     isSolid ? "fas fa-star" : "far fa-star"

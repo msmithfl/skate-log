@@ -1,8 +1,28 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { useGetUserID } from "../hooks/useGetUserID";
+import axios from "axios";
 import { useCookies } from "react-cookie";
 
-const Wishlist = () => {
+const Landed = () => {
+  const [wishlistTricks, setWishlistTricks] = useState([]);
   const [cookies, _] = useCookies(["access_token"]);
+
+  const userID = useGetUserID();
+
+  // getting the user's wishlist tricks
+  useEffect(() => {
+    const fetchWishlistTricks = async () => {
+      try {
+        const response = await axios.get(
+          `http://localhost:3001/tricks/wishlist/${userID}`
+        );
+        setWishlistTricks(response.data.wishlistTricks);
+      } catch (err) {
+        console.error(err);
+      }
+    };
+    if (cookies.access_token) fetchWishlistTricks();
+  }, []);
 
   return (
     <div>
@@ -12,8 +32,17 @@ const Wishlist = () => {
           Login or Register to save a wishlist.
         </div>
       )}
+      <ul className="pb-16">
+        {wishlistTricks.map((trick) => (
+          <li key={trick._id}>
+            <div className="flex justify-center">
+              <h2 className="text-xl">{trick.name}</h2>
+            </div>
+          </li>
+        ))}
+      </ul>
     </div>
   );
 };
 
-export default Wishlist;
+export default Landed;
