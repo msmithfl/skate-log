@@ -6,6 +6,20 @@ const Home = () => {
   const [tricks, setTricks] = useState([]);
   const [completedTricks, setCompletedTricks] = useState([]);
 
+  const [checkedList, setCheckedList] = useState([]);
+
+  // populate checkedList with default values based on isTrickSaved
+  useEffect(() => {
+    const initialCheckedList = tricks.map((trick) => isTrickSaved(trick._id));
+    setCheckedList(initialCheckedList);
+  }, [tricks]);
+
+  const handleCheckboxChange = (index) => {
+    const updatedCheckedList = [...checkedList];
+    updatedCheckedList[index] = !updatedCheckedList[index];
+    setCheckedList(updatedCheckedList);
+  };
+
   const userID = useGetUserID();
 
   useEffect(() => {
@@ -65,18 +79,24 @@ const Home = () => {
     <div>
       <h1 className="text-3xl text-center m-2">Tricklist</h1>
       <ul>
-        {tricks.map((trick) => (
+        {tricks.map((trick, index) => (
           <li key={trick._id}>
             <div className="flex justify-between items-center mx-8 gap-2">
               <input
                 type="checkbox"
                 onClick={(event) => {
                   saveTrick(event, trick._id);
-                  strikeoutText();
+                  handleCheckboxChange(index);
                 }}
-                defaultChecked={isTrickSaved(trick._id)}
+                defaultChecked={checkedList[index]}
               />
-              <h2 className="text-xl">{trick.name}</h2>
+              <h2
+                className={`${
+                  checkedList[index] ? "line-through" : ""
+                } text-xl`}
+              >
+                {trick.name}
+              </h2>
               <i className="fa-regular fa-heart"></i>
             </div>
           </li>
