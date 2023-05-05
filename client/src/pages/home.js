@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useGetUserID } from "../hooks/useGetUserID";
+import { useCookies } from "react-cookie";
 
 const Home = () => {
   const [tricks, setTricks] = useState([]);
   const [completedTricks, setCompletedTricks] = useState([]);
-
+  const [cookies, _] = useCookies(["access_token"]);
   const [checkedList, setCheckedList] = useState([]);
 
   // populate checkedList with default values based on isTrickSaved
@@ -43,7 +44,7 @@ const Home = () => {
     };
 
     fetchTricks();
-    fetchCompletedTricks();
+    if (cookies.access_token) fetchCompletedTricks();
   }, []);
 
   const saveTrick = async (event, trickID) => {
@@ -70,10 +71,6 @@ const Home = () => {
   };
 
   const isTrickSaved = (id) => completedTricks.includes(id);
-
-  const strikeoutText = () => {
-    console.log("FIRED");
-  };
 
   return (
     <div>

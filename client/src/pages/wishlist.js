@@ -1,7 +1,19 @@
 import React from "react";
+import { useCookies } from "react-cookie";
 
 const Wishlist = () => {
-  return <div className="text-3xl">Wishlist</div>;
+  const [cookies, _] = useCookies(["access_token"]);
+
+  return (
+    <div>
+      <h1 className="text-3xl text-center m-2">Wishlist</h1>
+      {!cookies.access_token && (
+        <div className="flex justify-center">
+          Login or Register to save a wishlist.
+        </div>
+      )}
+    </div>
+  );
 };
 
 export default Wishlist;

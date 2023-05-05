@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { useGetUserID } from "../hooks/useGetUserID";
 import axios from "axios";
+import { useCookies } from "react-cookie";
 
 const Landed = () => {
   const [completedTricks, setCompletedTricks] = useState([]);
+  const [cookies, _] = useCookies(["access_token"]);
 
   const userID = useGetUserID();
 
@@ -19,12 +21,17 @@ const Landed = () => {
         console.error(err);
       }
     };
-    fetchCompletedTricks();
+    if (cookies.access_token) fetchCompletedTricks();
   }, []);
 
   return (
     <div>
       <h1 className="text-3xl text-center m-2">My Progress</h1>
+      {!cookies.access_token && (
+        <div className="flex justify-center">
+          Login or Register to track your progress.
+        </div>
+      )}
       <ul>
         {completedTricks.map((trick) => (
           <li key={trick._id}>
