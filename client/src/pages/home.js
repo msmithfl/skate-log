@@ -102,13 +102,21 @@ const Home = () => {
   };
 
   const wishlistTrick = async (trickID) => {
-    if (!isSolid) {
+    if (!isTrickWishlist(trickID)) {
       try {
         await axios.put("http://localhost:3001/tricks/wishlist", {
           trickID,
           userID,
         });
         console.log(trickID);
+      } catch (err) {
+        console.error(err);
+      }
+    } else {
+      try {
+        await axios.delete("http://localhost:3001/tricks/wishlist", {
+          data: { userID: userID, trickID: trickID },
+        });
       } catch (err) {
         console.error(err);
       }
