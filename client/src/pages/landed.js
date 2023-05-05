@@ -32,7 +32,7 @@ const Landed = () => {
           Login or Register to track your progress.
         </div>
       )}
-      <ul>
+      <ul className="pb-16">
         {completedTricks.map((trick) => (
           <li key={trick._id}>
             <div className="flex justify-center">

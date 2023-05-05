@@ -45,8 +45,6 @@ const Login = () => {
 
       // navigate to homepage after successful login
       navigate("/");
-
-      console.log(response);
     } catch (err) {
       console.error(err);
     }
@@ -73,13 +71,12 @@ const Register = () => {
     event.preventDefault();
 
     try {
-      const response = await axios.post("http://localhost:3001/auth/register", {
+      await axios.post("http://localhost:3001/auth/register", {
         username,
         password,
       });
 
       alert("Registration Completed! Now login.");
-      console.log(response);
     } catch (err) {
       console.error(err);
     }

@@ -5,6 +5,8 @@ const TricksSchema = new mongoose.Schema({
   category: { type: String, required: true },
   description: { type: String, required: true },
   difficulty: { type: String, required: true },
+  stance: { type: String, required: true },
+  group: { type: Number, required: true },
 });
 
 export const TricksModel = mongoose.model("tricks", TricksSchema);

@@ -75,7 +75,7 @@ const Home = () => {
   return (
     <div>
       <h1 className="text-3xl text-center m-2">Tricklist</h1>
-      <ul>
+      <ul className=" pb-16">
         {tricks.map((trick, index) => (
           <li key={trick._id}>
             <div className="flex justify-between items-center mx-8 gap-2">
