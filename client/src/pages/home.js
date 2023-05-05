@@ -71,6 +71,7 @@ const Home = () => {
   };
 
   const isTrickSaved = (id) => completedTricks.includes(id);
+  let counter = 0;
 
   return (
     <div>
@@ -78,7 +79,11 @@ const Home = () => {
       <ul className=" pb-16">
         {tricks.map((trick, index) => (
           <li key={trick._id}>
-            <div className="flex justify-between items-center mx-8 gap-2">
+            <div
+              className={`flex justify-between items-center mx-8 gap-2 ${
+                index % 4 === 3 ? "mb-4" : "mb-0"
+              }`}
+            >
               <input
                 type="checkbox"
                 onClick={(event) => {
