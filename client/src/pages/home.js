@@ -4,22 +4,37 @@ import { useGetUserID } from "../hooks/useGetUserID";
 import { useCookies } from "react-cookie";
 
 const Home = () => {
-  const [tricks, setTricks] = useState([]);
-  const [completedTricks, setCompletedTricks] = useState([]);
   const [cookies, _] = useCookies(["access_token"]);
+  const [tricks, setTricks] = useState([]);
+  // database completedTricks/wishlistTricks
+  const [completedTricks, setCompletedTricks] = useState([]);
+  const [wishlistTricks, setWishlistTricks] = useState([]);
+  // local checklist/wishlist
   const [checkedList, setCheckedList] = useState([]);
+  const [wishlist, setWishlist] = useState([]);
   const [isSolid, setIsSolid] = useState(false);
 
   // populate checkedList with default values based on isTrickSaved
   useEffect(() => {
     const initialCheckedList = tricks.map((trick) => isTrickSaved(trick._id));
     setCheckedList(initialCheckedList);
+    //console.log(initialCheckedList);
+
+    const initialWishlist = tricks.map((trick) => isTrickWishlist(trick._id));
+    setWishlist(initialWishlist);
+    console.log(initialWishlist);
   }, [tricks]);
 
   const handleCheckboxChange = (index) => {
     const updatedCheckedList = [...checkedList];
     updatedCheckedList[index] = !updatedCheckedList[index];
     setCheckedList(updatedCheckedList);
+  };
+
+  const handleIconChange = (index) => {
+    const updatedWishlist = [...wishlist];
+    updatedWishlist[index] = !updatedWishlist[index];
+    setWishlist(updatedWishlist);
   };
 
   const userID = useGetUserID();
@@ -44,8 +59,23 @@ const Home = () => {
       }
     };
 
+    const fetchWishlistTricks = async () => {
+      try {
+        const response = await axios.get(
+          `http://localhost:3001/tricks/wishlist/ids/${userID}`
+        );
+        setWishlistTricks(response.data.wishlistTricks);
+        //console.log(response.data.wishlistTricks);
+      } catch (err) {
+        console.error(err);
+      }
+    };
+
     fetchTricks();
-    if (cookies.access_token) fetchCompletedTricks();
+    if (cookies.access_token) {
+      fetchCompletedTricks();
+      fetchWishlistTricks();
+    }
   }, []);
 
   const saveTrick = async (event, trickID) => {
@@ -72,21 +102,25 @@ const Home = () => {
   };
 
   const wishlistTrick = async (trickID) => {
-    try {
-      await axios.put("http://localhost:3001/tricks/wishlist", {
-        trickID,
-        userID,
-      });
-      console.log(trickID);
-    } catch (err) {
-      console.error(err);
+    if (!isSolid) {
+      try {
+        await axios.put("http://localhost:3001/tricks/wishlist", {
+          trickID,
+          userID,
+        });
+        console.log(trickID);
+      } catch (err) {
+        console.error(err);
+      }
     }
   };
 
   const isTrickSaved = (id) => completedTricks.includes(id);
+  const isTrickWishlist = (id) => wishlistTricks.includes(id);
 
   const toggleHeart = () => {
     setIsSolid(!isSolid);
+    console.log(isSolid);
   };
 
   return (
@@ -115,10 +149,15 @@ const Home = () => {
               >
                 {trick.name}
               </h2>
-              <div onClick={() => wishlistTrick(trick._id)}>
+              <div
+                onClick={() => {
+                  wishlistTrick(trick._id);
+                  handleIconChange(index);
+                }}
+              >
                 <i
                   className={`fa-regular ${
-                    isSolid ? "fas fa-star" : "far fa-star"
+                    wishlist[index] ? "fas fa-star" : "far fa-star"
                   }`}
                 ></i>
               </div>
