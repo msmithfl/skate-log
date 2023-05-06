@@ -16,7 +16,7 @@ const Navbar = () => {
   };
 
   return (
-    <div className="flex justify-between items-center gap-3 p-2 bg-black text-white">
+    <div className="flex justify-between items-center gap-3 px-4 py-2 bg-black text-white">
       <Link to="/">
         <div className="flex items-center">
           <img

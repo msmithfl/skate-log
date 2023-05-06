@@ -26,7 +26,10 @@ const Landed = () => {
 
   return (
     <div>
-      <h1 className="text-3xl text-center m-2">Wishlist</h1>
+      <div className="flex items-center justify-between my-2 mx-8">
+        <h1 className="text-3xl text-center">Wishlist</h1>
+        <i className="fa-solid fa-list text-xl"></i>
+      </div>
       {!cookies.access_token && (
         <div className="flex justify-center">
           Login or Register to save a wishlist.
@@ -35,8 +38,13 @@ const Landed = () => {
       <ul className="pb-16">
         {wishlistTricks.map((trick) => (
           <li key={trick._id}>
-            <div className="flex justify-center">
-              <h2 className="text-xl">{trick.name}</h2>
+            <div className="flex justify-between mx-10">
+              <div>
+                <h2 className="text-xl">{trick.name}</h2>
+              </div>
+              <div>
+                <i className="fa-regular fas fa-star"></i>
+              </div>
             </div>
           </li>
         ))}

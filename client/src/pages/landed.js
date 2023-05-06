@@ -26,7 +26,10 @@ const Landed = () => {
 
   return (
     <div>
-      <h1 className="text-3xl text-center m-2">My Progress</h1>
+      <div className="flex items-center justify-between my-2 mx-8">
+        <h1 className="text-3xl text-center">My Progress</h1>
+        <i className="fa-solid fa-list text-xl"></i>
+      </div>
       {!cookies.access_token && (
         <div className="flex justify-center">
           Login or Register to track your progress.

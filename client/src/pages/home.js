@@ -12,17 +12,14 @@ const Home = () => {
   // local checklist/wishlist
   const [checkedList, setCheckedList] = useState([]);
   const [wishlist, setWishlist] = useState([]);
-  const [isSolid, setIsSolid] = useState(false);
 
   // populate checkedList with default values based on isTrickSaved
   useEffect(() => {
     const initialCheckedList = tricks.map((trick) => isTrickSaved(trick._id));
     setCheckedList(initialCheckedList);
-    //console.log(initialCheckedList);
 
     const initialWishlist = tricks.map((trick) => isTrickWishlist(trick._id));
     setWishlist(initialWishlist);
-    console.log(initialWishlist);
   }, [tricks]);
 
   const handleCheckboxChange = (index) => {
@@ -39,7 +36,9 @@ const Home = () => {
 
   const userID = useGetUserID();
 
+  // fetches all tricks, users completed tricks and users wishlisted tricks
   useEffect(() => {
+    // all tricks
     const fetchTricks = async () => {
       try {
         const response = await axios.get("http://localhost:3001/tricks");
@@ -48,6 +47,8 @@ const Home = () => {
         console.error(err);
       }
     };
+
+    // completed tricks
     const fetchCompletedTricks = async () => {
       try {
         const response = await axios.get(
@@ -59,6 +60,7 @@ const Home = () => {
       }
     };
 
+    // wishlist tricks
     const fetchWishlistTricks = async () => {
       try {
         const response = await axios.get(
@@ -72,16 +74,20 @@ const Home = () => {
     };
 
     fetchTricks();
+
+    // only fetches completed and wishlist for signed in users
     if (cookies.access_token) {
       fetchCompletedTricks();
       fetchWishlistTricks();
     }
   }, []);
 
+  // saving/deleting a trick on checking/unchecking the checkbox
   const saveTrick = async (event, trickID) => {
     const isChecked = event.target.checked;
 
     if (isChecked) {
+      // add trick
       try {
         await axios.put("http://localhost:3001/tricks", {
           trickID,
@@ -91,6 +97,7 @@ const Home = () => {
         console.error(err);
       }
     } else {
+      // delete trick
       try {
         await axios.delete("http://localhost:3001/tricks", {
           data: { userID: userID, trickID: trickID },
@@ -108,7 +115,6 @@ const Home = () => {
           trickID,
           userID,
         });
-        console.log(trickID);
       } catch (err) {
         console.error(err);
       }
@@ -126,14 +132,31 @@ const Home = () => {
   const isTrickSaved = (id) => completedTricks.includes(id);
   const isTrickWishlist = (id) => wishlistTricks.includes(id);
 
-  const toggleHeart = () => {
-    setIsSolid(!isSolid);
-    console.log(isSolid);
-  };
+  function Filter() {
+    const [open, setOpen] = useState(false);
+
+    return (
+      <div>
+        <div onClick={() => setOpen(!open)}>
+          <i className="fa-solid fa-list text-xl"></i>
+          {open && (
+            <div className="absolute -translate-x-14 border-2 px-2 py-1 border-black rounded-md bg-white">
+              <div>Trick</div>
+              <div>Stance</div>
+              <div>Difficulty</div>
+            </div>
+          )}
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div>
-      <h1 className="text-3xl text-center m-2">Tricklist</h1>
+      <div className="flex items-center justify-between my-2 mx-8">
+        <h1 className="text-3xl text-center">Tricklist</h1>
+        <Filter />
+      </div>
       <ul className=" pb-16">
         {tricks.map((trick, index) => (
           <li key={trick._id}>
@@ -143,6 +166,7 @@ const Home = () => {
               }`}
             >
               <input
+                className=" accent-black"
                 type="checkbox"
                 onClick={(event) => {
                   saveTrick(event, trick._id);

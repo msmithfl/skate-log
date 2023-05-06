@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 function Footer() {
   return (
-    <div className="fixed bottom-0 w-full bg-black text-white z-10 p-4">
+    <div className="fixed bottom-0 w-full bg-black text-white p-4">
       <div className="flex justify-around">
         <Link to="/landed">Landed</Link>
         <Link to="/">Home</Link>
