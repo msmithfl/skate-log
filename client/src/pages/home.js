@@ -12,7 +12,8 @@ const Home = () => {
   // local checklist/wishlist
   const [checkedList, setCheckedList] = useState([]);
   const [wishlist, setWishlist] = useState([]);
-  const [listState, setListState] = useState("");
+  // for filtering
+  const [listState, setListState] = useState("trick");
 
   // populate checkedList with default values based on isTrickSaved
   useEffect(() => {
@@ -193,7 +194,12 @@ const Home = () => {
       </div>
       <ul className=" pb-16">
         {tricks.map((trick, index) => (
-          <li key={trick._id}>
+          <li
+            key={trick._id}
+            // className={`${index % 4 === 3 ? "rounded-b-xl" : ""} ${
+            //   index % 4 === 0 ? "rounded-t-xl" : ""
+            // } bg-amber-50 mx-2`}
+          >
             <div
               className={`flex justify-between items-center mx-4 gap-1 ${
                 index % 4 === 3 ? "mb-4" : "mb-0"

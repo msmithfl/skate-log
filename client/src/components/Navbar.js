@@ -16,14 +16,9 @@ const Navbar = () => {
   };
 
   return (
-    <div className="flex justify-between items-center gap-3 px-4 py-2 bg-black text-white">
+    <div className="flex justify-between items-center gap-3 px-6 py-4 bg-black text-white">
       <Link to="/">
         <div className="flex items-center">
-          <img
-            src="https://cutewallpaper.org/24/log-png/log-my-singing-monsters-wiki-fandom.png"
-            alt="skate-log-logo"
-            className="w-10"
-          />
           <p>Skate Log</p>
         </div>
       </Link>

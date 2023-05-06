@@ -6,7 +6,7 @@ import { useCookies } from "react-cookie";
 const Landed = () => {
   const [wishlistTricks, setWishlistTricks] = useState([]);
   const [cookies, _] = useCookies(["access_token"]);
-  const [listState, setListState] = useState("");
+  const [listState, setListState] = useState("trick");
 
   const userID = useGetUserID();
 

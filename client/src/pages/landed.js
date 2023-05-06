@@ -8,6 +8,29 @@ const Landed = () => {
   const [cookies, _] = useCookies(["access_token"]);
   const [listState, setListState] = useState("trick");
 
+  // for filtering
+  const regularTricks = completedTricks.filter(
+    (trick) => trick.stance === "regular"
+  );
+  const switchTricks = completedTricks.filter(
+    (trick) => trick.stance === "switch"
+  );
+  const fakieTricks = completedTricks.filter(
+    (trick) => trick.stance === "fakie"
+  );
+  const nollieTricks = completedTricks.filter(
+    (trick) => trick.stance === "nollie"
+  );
+  const easyTricks = completedTricks.filter(
+    (trick) => trick.difficulty === "easy"
+  );
+  const advancedTricks = completedTricks.filter(
+    (trick) => trick.difficulty === "advanced"
+  );
+  const expertTricks = completedTricks.filter(
+    (trick) => trick.difficulty === "expert"
+  );
+
   const userID = useGetUserID();
 
   // getting the user's completed tricks
@@ -22,7 +45,6 @@ const Landed = () => {
         console.error(err);
       }
     };
-    console.log(listState);
     if (cookies.access_token) fetchCompletedTricks();
   }, [listState]);
 
@@ -51,19 +73,25 @@ const Landed = () => {
             <div className="absolute -translate-x-14 border-2 px-3 py-1 border-black rounded-md bg-white">
               <div
                 onClick={() => handleMenuClick("trick")}
-                className="hover:duration-300 hover:scale-110 cursor-pointer"
+                className={`${
+                  listState === "trick" && " font-bold"
+                } hover:duration-300 hover:scale-110 cursor-pointer`}
               >
                 Trick
               </div>
               <div
                 onClick={() => handleMenuClick("stance")}
-                className="hover:duration-300 hover:scale-110 cursor-pointer"
+                className={`${
+                  listState === "stance" && " font-bold"
+                } hover:duration-300 hover:scale-110 cursor-pointer`}
               >
                 Stance
               </div>
               <div
                 onClick={() => handleMenuClick("diff")}
-                className="hover:duration-300 hover:scale-110 cursor-pointer"
+                className={`${
+                  listState === "diff" && " font-bold"
+                } hover:duration-300 hover:scale-110 cursor-pointer`}
               >
                 Difficulty
               </div>
@@ -94,16 +122,63 @@ const Landed = () => {
               </div>
             </li>
           ))}
-        {listState === "stance" &&
-          completedTricks
-            .filter((trick) => trick.stance === "regular")
-            .map((trick) => (
+        {listState === "stance" && (
+          <>
+            {regularTricks.map((trick) => (
               <li key={trick._id}>
                 <div className="flex justify-center">
                   <h2 className="text-xl">{trick.name}</h2>
                 </div>
               </li>
             ))}
+            {fakieTricks.map((trick) => (
+              <li key={trick._id}>
+                <div className="flex justify-center">
+                  <h2 className="text-xl">{trick.name}</h2>
+                </div>
+              </li>
+            ))}
+            {switchTricks.map((trick) => (
+              <li key={trick._id}>
+                <div className="flex justify-center">
+                  <h2 className="text-xl">{trick.name}</h2>
+                </div>
+              </li>
+            ))}
+            {nollieTricks.map((trick) => (
+              <li key={trick._id}>
+                <div className="flex justify-center">
+                  <h2 className="text-xl">{trick.name}</h2>
+                </div>
+              </li>
+            ))}
+          </>
+        )}
+        {listState === "diff" && (
+          <>
+            {expertTricks.map((trick) => (
+              <li key={trick._id}>
+                <div className="flex justify-center">
+                  <h2 className="text-xl">{trick.name}</h2>
+                </div>
+              </li>
+            ))}
+            {advancedTricks.map((trick) => (
+              <li key={trick._id}>
+                <div className="flex justify-center">
+                  <h2 className="text-xl">{trick.name}</h2>
+                </div>
+              </li>
+            ))}
+            {easyTricks.map((trick) => (
+              <li key={trick._id}>
+                <div className="flex justify-center">
+                  <h2 className="text-xl">{trick.name}</h2>
+                </div>
+              </li>
+            ))}
+          </>
+        )}
       </ul>
     </div>
   );
