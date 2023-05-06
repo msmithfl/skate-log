@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 
 const Auth = () => {
   return (
-    <div>
+    <div className="z-10">
       <Login />
       <Register />
     </div>
