@@ -6,7 +6,6 @@ import { useCookies } from "react-cookie";
 const Landed = () => {
   const [wishlistTricks, setWishlistTricks] = useState([]);
   const [cookies, _] = useCookies(["access_token"]);
-  const [listState, setListState] = useState("trick");
 
   const userID = useGetUserID();
 
@@ -25,63 +24,10 @@ const Landed = () => {
     if (cookies.access_token) fetchWishlistTricks();
   }, []);
 
-  useEffect(() => {
-    console.log(listState);
-  }, [listState]);
-
-  const handleMenuClick = (item) => {
-    if (item === "trick") {
-      setListState("trick");
-    } else if (item === "stance") {
-      setListState("stance");
-    } else if (item === "diff") {
-      setListState("diff");
-    }
-  };
-
-  function FilterMenu() {
-    const [open, setOpen] = useState(false);
-
-    return (
-      <div>
-        <div onClick={() => setOpen(!open)}>
-          <i
-            className={`hover:duration-300 hover:scale-110 ${
-              open ? "duration-300 scale-110" : "duration-300 scale-100"
-            } fa-solid fa-list text-xl px-1 rounded-md`}
-          ></i>
-          {open && (
-            <div className="absolute -translate-x-14 border-2 px-3 py-1 border-black rounded-md bg-white">
-              <div
-                onClick={() => handleMenuClick("trick")}
-                className="hover:duration-300 hover:scale-110 cursor-pointer"
-              >
-                Trick
-              </div>
-              <div
-                onClick={() => handleMenuClick("stance")}
-                className="hover:duration-300 hover:scale-110 cursor-pointer"
-              >
-                Stance
-              </div>
-              <div
-                onClick={() => handleMenuClick("diff")}
-                className="hover:duration-300 hover:scale-110 cursor-pointer"
-              >
-                Difficulty
-              </div>
-            </div>
-          )}
-        </div>
-      </div>
-    );
-  }
-
   return (
     <div>
-      <div className="flex items-center justify-between my-2 mx-8">
+      <div className="flex items-center justify-center my-2 mx-8">
         <h1 className="text-3xl text-center">Wishlist</h1>
-        <FilterMenu />
       </div>
       {!cookies.access_token && (
         <div className="flex justify-center text-center">

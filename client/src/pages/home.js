@@ -15,18 +15,12 @@ const Home = () => {
   // local checklist/wishlist
   const [checkedList, setCheckedList] = useState([]);
   const [wishlist, setWishlist] = useState([]);
-
-  // for filtering
-  const [listState, setListState] = useState("trick");
-  const regularTricks = tricks.filter((trick) => trick.stance === "regular");
-
   const [isLoading, setIsLoading] = useState(false);
 
   // populate checkedList with default values based on isTrickSaved
   useEffect(() => {
     const initialCheckedList = tricks.map((trick) => isTrickSaved(trick._id));
     setCheckedList(initialCheckedList);
-    console.log(initialCheckedList);
 
     const initialWishlist = tricks.map((trick) => isTrickWishlist(trick._id));
     setWishlist(initialWishlist);
@@ -98,60 +92,6 @@ const Home = () => {
   const isTrickSaved = (id) => completedTricks.includes(id);
   const isTrickWishlist = (id) => wishlistTricks.includes(id);
 
-  const handleMenuClick = (item) => {
-    if (item === "trick") {
-      setListState("trick");
-    } else if (item === "stance") {
-      setListState("stance");
-    } else if (item === "diff") {
-      setListState("diff");
-    }
-  };
-
-  function FilterMenu() {
-    const [open, setOpen] = useState(false);
-
-    return (
-      <div>
-        <div onClick={() => setOpen(!open)}>
-          <i
-            className={`hover:duration-300 hover:scale-110 ${
-              open ? "duration-300 scale-110" : "duration-300 scale-100"
-            }  fa-solid fa-list text-xl px-1 rounded-md cursor-pointer`}
-          ></i>
-          {open && (
-            <div className="absolute -translate-x-14 border-2 px-3 py-1 border-black rounded-md bg-white">
-              <div
-                onClick={() => handleMenuClick("trick")}
-                className={`${
-                  listState === "trick" && " font-bold"
-                } hover:duration-300 hover:scale-110 cursor-pointer`}
-              >
-                Trick
-              </div>
-              <div
-                onClick={() => handleMenuClick("stance")}
-                className={`${
-                  listState === "stance" && " font-bold"
-                } hover:duration-300 hover:scale-110 cursor-pointer`}
-              >
-                Stance
-              </div>
-              <div
-                onClick={() => handleMenuClick("diff")}
-                className={`${
-                  listState === "diff" && " font-bold"
-                } hover:duration-300 hover:scale-110 cursor-pointer`}
-              >
-                Difficulty
-              </div>
-            </div>
-          )}
-        </div>
-      </div>
-    );
-  }
-
   return (
     <div>
       <ul className="pb-16">
@@ -159,69 +99,50 @@ const Home = () => {
           <LoadingSpinner />
         ) : (
           <>
-            <div className="flex items-center justify-between my-2 mx-8">
+            <div className="flex items-center justify-center my-2 mx-8">
               <h1 className="text-3xl text-center select-none">Tricklist</h1>
-              <FilterMenu />
             </div>
-            {listState === "trick" &&
-              tricks.map((trick, index) => (
-                <li key={trick._id}>
+            {tricks.map((trick, index) => (
+              <li key={trick._id}>
+                <div
+                  className={`flex justify-between items-center mx-4 gap-1 ${
+                    index % 4 === 3 ? "mb-4" : "mb-0"
+                  }`}
+                >
                   <div
-                    className={`flex justify-between items-center mx-4 gap-1 ${
-                      index % 4 === 3 ? "mb-4" : "mb-0"
-                    }`}
+                    onClick={() => {
+                      saveTrick(userID, trick._id, isTrickSaved(trick._id));
+                      handleCheckboxChange(index);
+                    }}
                   >
-                    <div
-                      onClick={() => {
-                        saveTrick(userID, trick._id, isTrickSaved(trick._id));
-                        handleCheckboxChange(index);
-                      }}
+                    <h2
+                      className={`${
+                        checkedList[index] ? "line-through" : ""
+                      } text-xl cursor-pointer select-none`}
                     >
-                      <h2
-                        className={`${
-                          checkedList[index] ? "line-through" : ""
-                        } text-xl cursor-pointer select-none`}
-                      >
-                        {trick.name}
-                      </h2>
-                    </div>
-                    <div
-                      className="cursor-pointer"
-                      onClick={() => {
-                        wishlistTrick(
-                          userID,
-                          trick._id,
-                          isTrickWishlist(trick._id)
-                        );
-                        handleIconChange(index);
-                      }}
-                    >
-                      <i
-                        className={`fa-regular ${
-                          wishlist[index] ? "fas fa-star" : "far fa-star"
-                        }`}
-                      ></i>
-                    </div>
+                      {trick.name}
+                    </h2>
                   </div>
-                </li>
-              ))}
-            {listState === "stance" && (
-              <>
-                {regularTricks.map((trick, index) => (
-                  <li key={trick._id}>
-                    <div className="flex justify-center">
-                      <h2
-                        className={`${
-                          checkedList[index] ? "line-through" : ""
-                        } text-xl cursor-pointer select-none`}
-                      >
-                        {trick.name}
-                      </h2>
-                    </div>
-                  </li>
-                ))}
-              </>
-            )}
+                  <div
+                    className="cursor-pointer"
+                    onClick={() => {
+                      wishlistTrick(
+                        userID,
+                        trick._id,
+                        isTrickWishlist(trick._id)
+                      );
+                      handleIconChange(index);
+                    }}
+                  >
+                    <i
+                      className={`fa-regular ${
+                        wishlist[index] ? "fas fa-star" : "far fa-star"
+                      }`}
+                    ></i>
+                  </div>
+                </div>
+              </li>
+            ))}
           </>
         )}
       </ul>
