@@ -91,7 +91,7 @@ const Landed = () => {
       <ul className="pb-16">
         {wishlistTricks.map((trick) => (
           <li key={trick._id}>
-            <div className="flex justify-between mx-10">
+            <div className="flex justify-between mx-4">
               <div>
                 <h2 className="text-xl">{trick.name}</h2>
               </div>

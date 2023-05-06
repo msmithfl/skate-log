@@ -18,14 +18,18 @@ const Navbar = () => {
   return (
     <div className="flex justify-between items-center gap-3 px-6 py-4 bg-black text-white">
       <Link to="/">
-        <div className="flex items-center">
+        <div className="flex items-center select-none">
           <p>Skate Log</p>
         </div>
       </Link>
       {!cookies.access_token ? (
-        <Link to="/auth">Login/Register</Link>
+        <div className="select-none">
+          <Link to="/auth">Login/Register</Link>
+        </div>
       ) : (
-        <button onClick={logout}>Logout</button>
+        <div className="select-none">
+          <button onClick={logout}>Logout</button>
+        </div>
       )}
     </div>
   );

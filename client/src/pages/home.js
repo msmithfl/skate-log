@@ -86,9 +86,9 @@ const Home = () => {
 
   // saving/deleting a trick on checking/unchecking the checkbox
   const saveTrick = async (event, trickID) => {
-    const isChecked = event.target.checked;
+    //const isChecked = event.target.checked;
 
-    if (isChecked) {
+    if (!isTrickSaved(trickID)) {
       // add trick
       try {
         await axios.put("http://localhost:3001/tricks", {
@@ -157,7 +157,7 @@ const Home = () => {
           <i
             className={`hover:duration-300 hover:scale-110 ${
               open ? "duration-300 scale-110" : "duration-300 scale-100"
-            } fa-solid fa-list text-xl px-1 rounded-md`}
+            } fa-solid fa-list text-xl px-1 cursor-pointer`}
           ></i>
           {open && (
             <div className="absolute -translate-x-14 border-2 px-3 py-1 border-black rounded-md bg-white">
@@ -189,10 +189,10 @@ const Home = () => {
   return (
     <div>
       <div className="flex items-center justify-between my-2 mx-8">
-        <h1 className="text-3xl text-center">Tricklist</h1>
+        <h1 className="text-3xl text-center select-none">Tricklist</h1>
         <Filter />
       </div>
-      <ul className=" pb-16">
+      <ul className="pb-16">
         {tricks.map((trick, index) => (
           <li
             key={trick._id}
@@ -205,7 +205,7 @@ const Home = () => {
                 index % 4 === 3 ? "mb-4" : "mb-0"
               }`}
             >
-              <input
+              {/* <input
                 className=" accent-black"
                 type="checkbox"
                 onClick={(event) => {
@@ -213,15 +213,23 @@ const Home = () => {
                   handleCheckboxChange(index);
                 }}
                 defaultChecked={checkedList[index]}
-              />
-              <h2
-                className={`${
-                  checkedList[index] ? "line-through" : ""
-                } text-md`}
-              >
-                {trick.name}
-              </h2>
+              /> */}
               <div
+                onClick={(event) => {
+                  saveTrick(event, trick._id);
+                  handleCheckboxChange(index);
+                }}
+              >
+                <h2
+                  className={`${
+                    checkedList[index] ? "line-through" : ""
+                  } text-xl cursor-pointer select-none`}
+                >
+                  {trick.name}
+                </h2>
+              </div>
+              <div
+                className="cursor-pointer"
                 onClick={() => {
                   wishlistTrick(trick._id);
                   handleIconChange(index);
