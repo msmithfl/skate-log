@@ -24,11 +24,34 @@ const Landed = () => {
     if (cookies.access_token) fetchWishlistTricks();
   }, []);
 
+  function Filter() {
+    const [open, setOpen] = useState(false);
+
+    return (
+      <div>
+        <div onClick={() => setOpen(!open)}>
+          <i
+            className={`${
+              open ? "duration-300 scale-110" : "duration-300 scale-100"
+            } fa-solid fa-list text-xl px-1 rounded-md`}
+          ></i>
+          {open && (
+            <div className="absolute -translate-x-14 border-2 px-3 py-1 border-black rounded-md bg-white">
+              <div>Trick</div>
+              <div>Stance</div>
+              <div>Difficulty</div>
+            </div>
+          )}
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div>
       <div className="flex items-center justify-between my-2 mx-8">
         <h1 className="text-3xl text-center">Wishlist</h1>
-        <i className="fa-solid fa-list text-xl"></i>
+        <Filter />
       </div>
       {!cookies.access_token && (
         <div className="flex justify-center">

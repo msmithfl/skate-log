@@ -138,9 +138,13 @@ const Home = () => {
     return (
       <div>
         <div onClick={() => setOpen(!open)}>
-          <i className="fa-solid fa-list text-xl"></i>
+          <i
+            className={`${
+              open ? "duration-300 scale-110" : "duration-300 scale-100"
+            } fa-solid fa-list text-xl px-1 rounded-md`}
+          ></i>
           {open && (
-            <div className="absolute -translate-x-14 border-2 px-2 py-1 border-black rounded-md bg-white">
+            <div className="absolute -translate-x-14 border-2 px-3 py-1 border-black rounded-md bg-white">
               <div>Trick</div>
               <div>Stance</div>
               <div>Difficulty</div>
@@ -161,7 +165,7 @@ const Home = () => {
         {tricks.map((trick, index) => (
           <li key={trick._id}>
             <div
-              className={`flex justify-between items-center mx-8 gap-2 ${
+              className={`flex justify-between items-center mx-4 gap-1 ${
                 index % 4 === 3 ? "mb-4" : "mb-0"
               }`}
             >
@@ -177,7 +181,7 @@ const Home = () => {
               <h2
                 className={`${
                   checkedList[index] ? "line-through" : ""
-                } text-xl`}
+                } text-md`}
               >
                 {trick.name}
               </h2>
