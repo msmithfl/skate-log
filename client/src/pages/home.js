@@ -12,6 +12,7 @@ const Home = () => {
   // local checklist/wishlist
   const [checkedList, setCheckedList] = useState([]);
   const [wishlist, setWishlist] = useState([]);
+  const [listState, setListState] = useState("");
 
   // populate checkedList with default values based on isTrickSaved
   useEffect(() => {
@@ -132,6 +133,20 @@ const Home = () => {
   const isTrickSaved = (id) => completedTricks.includes(id);
   const isTrickWishlist = (id) => wishlistTricks.includes(id);
 
+  useEffect(() => {
+    console.log(listState);
+  }, [listState]);
+
+  const handleMenuClick = (item) => {
+    if (item === "trick") {
+      setListState("trick");
+    } else if (item === "stance") {
+      setListState("stance");
+    } else if (item === "diff") {
+      setListState("diff");
+    }
+  };
+
   function Filter() {
     const [open, setOpen] = useState(false);
 
@@ -139,15 +154,30 @@ const Home = () => {
       <div>
         <div onClick={() => setOpen(!open)}>
           <i
-            className={`${
+            className={`hover:duration-300 hover:scale-110 ${
               open ? "duration-300 scale-110" : "duration-300 scale-100"
             } fa-solid fa-list text-xl px-1 rounded-md`}
           ></i>
           {open && (
             <div className="absolute -translate-x-14 border-2 px-3 py-1 border-black rounded-md bg-white">
-              <div>Trick</div>
-              <div>Stance</div>
-              <div>Difficulty</div>
+              <div
+                onClick={() => handleMenuClick("trick")}
+                className="hover:duration-300 hover:scale-110 cursor-pointer"
+              >
+                Trick
+              </div>
+              <div
+                onClick={() => handleMenuClick("stance")}
+                className="hover:duration-300 hover:scale-110 cursor-pointer"
+              >
+                Stance
+              </div>
+              <div
+                onClick={() => handleMenuClick("diff")}
+                className="hover:duration-300 hover:scale-110 cursor-pointer"
+              >
+                Difficulty
+              </div>
             </div>
           )}
         </div>
