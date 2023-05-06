@@ -9,7 +9,7 @@ const Landed = () => {
 
   const userID = useGetUserID();
 
-  // getting the user's completed tricks
+  // getting the user's completed  tricks
   useEffect(() => {
     const fetchCompletedTricks = async () => {
       try {
