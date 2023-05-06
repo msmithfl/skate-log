@@ -39,7 +39,7 @@ const Landed = () => {
     }
   };
 
-  function Filter() {
+  function FilterMenu() {
     const [open, setOpen] = useState(false);
 
     return (
@@ -81,7 +81,7 @@ const Landed = () => {
     <div>
       <div className="flex items-center justify-between my-2 mx-8">
         <h1 className="text-3xl text-center">Wishlist</h1>
-        <Filter />
+        <FilterMenu />
       </div>
       {!cookies.access_token && (
         <div className="flex justify-center text-center">

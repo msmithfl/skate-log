@@ -15,6 +15,8 @@ const Home = () => {
   // for filtering
   const [listState, setListState] = useState("trick");
 
+  const [isLoading, setIsLoading] = useState(false);
+
   // populate checkedList with default values based on isTrickSaved
   useEffect(() => {
     const initialCheckedList = tricks.map((trick) => isTrickSaved(trick._id));
@@ -43,10 +45,13 @@ const Home = () => {
     // all tricks
     const fetchTricks = async () => {
       try {
+        setIsLoading(true);
         const response = await axios.get("http://localhost:3001/tricks");
         setTricks(response.data);
+        setIsLoading(false);
       } catch (err) {
         console.error(err);
+        setIsLoading(false);
       }
     };
 
@@ -148,7 +153,7 @@ const Home = () => {
     }
   };
 
-  function Filter() {
+  function FilterMenu() {
     const [open, setOpen] = useState(false);
 
     return (
@@ -186,26 +191,39 @@ const Home = () => {
     );
   }
 
+  function LoadingSpinner() {
+    return (
+      <div className="flex justify-center items-center h-screen pb-20">
+        <i className="animate-spin fa-solid fa-spinner text-3xl"></i>
+        LOADING
+      </div>
+    );
+  }
+
   return (
     <div>
-      <div className="flex items-center justify-between my-2 mx-8">
-        <h1 className="text-3xl text-center select-none">Tricklist</h1>
-        <Filter />
-      </div>
       <ul className="pb-16">
-        {tricks.map((trick, index) => (
-          <li
-            key={trick._id}
-            // className={`${index % 4 === 3 ? "rounded-b-xl" : ""} ${
-            //   index % 4 === 0 ? "rounded-t-xl" : ""
-            // } bg-amber-50 mx-2`}
-          >
-            <div
-              className={`flex justify-between items-center mx-4 gap-1 ${
-                index % 4 === 3 ? "mb-4" : "mb-0"
-              }`}
-            >
-              {/* <input
+        {isLoading ? (
+          <LoadingSpinner />
+        ) : (
+          <>
+            <div className="flex items-center justify-between my-2 mx-8">
+              <h1 className="text-3xl text-center select-none">Tricklist</h1>
+              <FilterMenu />
+            </div>
+            {tricks.map((trick, index) => (
+              <li
+                key={trick._id}
+                // className={`${index % 4 === 3 ? "rounded-b-xl" : ""} ${
+                //   index % 4 === 0 ? "rounded-t-xl" : ""
+                // } bg-amber-50 mx-2`}
+              >
+                <div
+                  className={`flex justify-between items-center mx-4 gap-1 ${
+                    index % 4 === 3 ? "mb-4" : "mb-0"
+                  }`}
+                >
+                  {/* <input
                 className=" accent-black"
                 type="checkbox"
                 onClick={(event) => {
@@ -214,36 +232,38 @@ const Home = () => {
                 }}
                 defaultChecked={checkedList[index]}
               /> */}
-              <div
-                onClick={(event) => {
-                  saveTrick(event, trick._id);
-                  handleCheckboxChange(index);
-                }}
-              >
-                <h2
-                  className={`${
-                    checkedList[index] ? "line-through" : ""
-                  } text-xl cursor-pointer select-none`}
-                >
-                  {trick.name}
-                </h2>
-              </div>
-              <div
-                className="cursor-pointer"
-                onClick={() => {
-                  wishlistTrick(trick._id);
-                  handleIconChange(index);
-                }}
-              >
-                <i
-                  className={`fa-regular ${
-                    wishlist[index] ? "fas fa-star" : "far fa-star"
-                  }`}
-                ></i>
-              </div>
-            </div>
-          </li>
-        ))}
+                  <div
+                    onClick={(event) => {
+                      saveTrick(event, trick._id);
+                      handleCheckboxChange(index);
+                    }}
+                  >
+                    <h2
+                      className={`${
+                        checkedList[index] ? "line-through" : ""
+                      } text-xl cursor-pointer select-none`}
+                    >
+                      {trick.name}
+                    </h2>
+                  </div>
+                  <div
+                    className="cursor-pointer"
+                    onClick={() => {
+                      wishlistTrick(trick._id);
+                      handleIconChange(index);
+                    }}
+                  >
+                    <i
+                      className={`fa-regular ${
+                        wishlist[index] ? "fas fa-star" : "far fa-star"
+                      }`}
+                    ></i>
+                  </div>
+                </div>
+              </li>
+            ))}
+          </>
+        )}
       </ul>
     </div>
   );

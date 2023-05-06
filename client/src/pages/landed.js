@@ -58,7 +58,7 @@ const Landed = () => {
     }
   };
 
-  function Filter() {
+  function FilterMenu() {
     const [open, setOpen] = useState(false);
 
     return (
@@ -67,7 +67,7 @@ const Landed = () => {
           <i
             className={`hover:duration-300 hover:scale-110 ${
               open ? "duration-300 scale-110" : "duration-300 scale-100"
-            }  fa-solid fa-list text-xl px-1 rounded-md`}
+            }  fa-solid fa-list text-xl px-1 rounded-md cursor-pointer`}
           ></i>
           {open && (
             <div className="absolute -translate-x-14 border-2 px-3 py-1 border-black rounded-md bg-white">
@@ -106,7 +106,7 @@ const Landed = () => {
     <div>
       <div className="flex items-center justify-between my-2 mx-8">
         <h1 className="text-3xl text-center">My Progress</h1>
-        <Filter />
+        <FilterMenu />
       </div>
       {!cookies.access_token && (
         <div className="flex justify-center text-center">
