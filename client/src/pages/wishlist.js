@@ -3,25 +3,31 @@ import { useGetUserID } from "../hooks/useGetUserID";
 import axios from "axios";
 import { useCookies } from "react-cookie";
 
-const Landed = () => {
-  const [wishlistTricks, setWishlistTricks] = useState([]);
+const Wishlist = () => {
   const [cookies, _] = useCookies(["access_token"]);
+  const [wishlistTricks, setWishlistTricks] = useState([]);
 
   const userID = useGetUserID();
 
-  // getting the user's wishlist tricks
+  // fetches all tricks, users completed tricks and users wishlisted tricks
   useEffect(() => {
+    // wishlist tricks
     const fetchWishlistTricks = async () => {
       try {
         const response = await axios.get(
           `http://localhost:3001/tricks/wishlist/${userID}`
         );
         setWishlistTricks(response.data.wishlistTricks);
+        //console.log(response.data.wishlistTricks);
       } catch (err) {
         console.error(err);
       }
     };
-    if (cookies.access_token) fetchWishlistTricks();
+
+    // only fetches completed and wishlist for signed in users
+    if (cookies.access_token) {
+      fetchWishlistTricks();
+    }
   }, []);
 
   return (
@@ -52,4 +58,4 @@ const Landed = () => {
   );
 };
 
-export default Landed;
+export default Wishlist;

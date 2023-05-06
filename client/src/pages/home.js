@@ -26,7 +26,7 @@ const Home = () => {
     setWishlist(initialWishlist);
   }, [tricks]);
 
-  const handleCheckboxChange = (index) => {
+  const handleChecklistChange = (index) => {
     const updatedCheckedList = [...checkedList];
     updatedCheckedList[index] = !updatedCheckedList[index];
     setCheckedList(updatedCheckedList);
@@ -112,12 +112,14 @@ const Home = () => {
                   <div
                     onClick={() => {
                       saveTrick(userID, trick._id, isTrickSaved(trick._id));
-                      handleCheckboxChange(index);
+                      handleChecklistChange(index);
                     }}
                   >
                     <h2
                       className={`${
-                        checkedList[index] ? "line-through" : ""
+                        checkedList[index]
+                          ? "line-through text-gray-400/50"
+                          : ""
                       } text-xl cursor-pointer select-none`}
                     >
                       {trick.name}
