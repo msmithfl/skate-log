@@ -107,7 +107,7 @@ const Wishlist = () => {
                 }}
               >
                 <i
-                  className={`fa-regular ${
+                  className={`fa-regular cursor-pointer ${
                     localWishlist[index] ? "fas fa-star" : "far fa-star"
                   }`}
                 ></i>
