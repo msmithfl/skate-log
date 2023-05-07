@@ -2,12 +2,31 @@ import React, { useEffect, useState } from "react";
 import { useGetUserID } from "../hooks/useGetUserID";
 import axios from "axios";
 import { useCookies } from "react-cookie";
+import { wishlistTrick } from "../hooks/useWishlistTrick";
 
 const Wishlist = () => {
   const [cookies, _] = useCookies(["access_token"]);
+  // database
   const [wishlistTricks, setWishlistTricks] = useState([]);
+  // local
+  const [localWishlist, setLocalWishlist] = useState([]);
+
+  useEffect(() => {
+    const initialWishlist = wishlistTricks.map(() => true);
+    setLocalWishlist(initialWishlist);
+  }, [wishlistTricks]);
+
+  const handleIconChange = (index) => {
+    const updatedLocalWishlist = [...localWishlist];
+    updatedLocalWishlist[index] = !updatedLocalWishlist[index];
+    setLocalWishlist(updatedLocalWishlist);
+  };
 
   const userID = useGetUserID();
+
+  useEffect(() => {
+    console.log(localWishlist);
+  }, [localWishlist]);
 
   // fetches all tricks, users completed tricks and users wishlisted tricks
   useEffect(() => {
@@ -30,6 +49,8 @@ const Wishlist = () => {
     }
   }, []);
 
+  const isTrickWishlist = (id) => wishlistTricks.includes(id);
+
   return (
     <div>
       <div className="flex items-center justify-center my-2 mx-8">
@@ -41,14 +62,23 @@ const Wishlist = () => {
         </div>
       )}
       <ul className="pb-16">
-        {wishlistTricks.map((trick) => (
+        {wishlistTricks.map((trick, index) => (
           <li key={trick._id}>
             <div className="flex justify-between mx-4">
               <div>
                 <h2 className="text-xl">{trick.name}</h2>
               </div>
-              <div>
-                <i className="fa-regular fas fa-star"></i>
+              <div
+                onClick={() => {
+                  wishlistTrick(userID, trick._id, localWishlist[index]);
+                  handleIconChange(index, trick._id);
+                }}
+              >
+                <i
+                  className={`fa-regular ${
+                    localWishlist[index] ? "fas fa-star" : "far fa-star"
+                  }`}
+                ></i>
               </div>
             </div>
           </li>

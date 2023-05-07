@@ -13,29 +13,29 @@ const Home = () => {
   const [completedTricks, setCompletedTricks] = useState([]);
   const [wishlistTricks, setWishlistTricks] = useState([]);
   // local checklist/wishlist
-  const [checkedList, setCheckedList] = useState([]);
-  const [wishlist, setWishlist] = useState([]);
+  const [localCheckedList, setLocalCheckedList] = useState([]);
+  const [localWishlist, setLocalWishlist] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
   // populate checkedList with default values based on isTrickSaved
   useEffect(() => {
     const initialCheckedList = tricks.map((trick) => isTrickSaved(trick._id));
-    setCheckedList(initialCheckedList);
+    setLocalCheckedList(initialCheckedList);
 
     const initialWishlist = tricks.map((trick) => isTrickWishlist(trick._id));
-    setWishlist(initialWishlist);
+    setLocalWishlist(initialWishlist);
   }, [tricks]);
 
   const handleChecklistChange = (index) => {
-    const updatedCheckedList = [...checkedList];
-    updatedCheckedList[index] = !updatedCheckedList[index];
-    setCheckedList(updatedCheckedList);
+    const updatedLocalCheckedList = [...localCheckedList];
+    updatedLocalCheckedList[index] = !updatedLocalCheckedList[index];
+    setLocalCheckedList(updatedLocalCheckedList);
   };
 
   const handleIconChange = (index) => {
-    const updatedWishlist = [...wishlist];
-    updatedWishlist[index] = !updatedWishlist[index];
-    setWishlist(updatedWishlist);
+    const updatedLocalWishlist = [...localWishlist];
+    updatedLocalWishlist[index] = !updatedLocalWishlist[index];
+    setLocalWishlist(updatedLocalWishlist);
   };
 
   const userID = useGetUserID();
@@ -117,7 +117,7 @@ const Home = () => {
                   >
                     <h2
                       className={`${
-                        checkedList[index]
+                        localCheckedList[index]
                           ? "line-through text-gray-400/50"
                           : ""
                       } text-xl cursor-pointer select-none`}
@@ -138,7 +138,7 @@ const Home = () => {
                   >
                     <i
                       className={`fa-regular ${
-                        wishlist[index] ? "fas fa-star" : "far fa-star"
+                        localWishlist[index] ? "fas fa-star" : "far fa-star"
                       }`}
                     ></i>
                   </div>
