@@ -74,7 +74,6 @@ const Home = () => {
           `http://localhost:3001/tricks/wishlist/ids/${userID}`
         );
         setWishlistTricks(response.data.wishlistTricks);
-        //console.log(response.data.wishlistTricks);
       } catch (err) {
         console.error(err);
       }

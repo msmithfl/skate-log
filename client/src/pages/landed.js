@@ -4,8 +4,8 @@ import axios from "axios";
 import { useCookies } from "react-cookie";
 
 const Landed = () => {
-  const [completedTricks, setCompletedTricks] = useState([]);
   const [cookies, _] = useCookies(["access_token"]);
+  const [completedTricks, setCompletedTricks] = useState([]);
 
   const userID = useGetUserID();
 
