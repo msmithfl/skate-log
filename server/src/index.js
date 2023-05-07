@@ -8,7 +8,7 @@ import { tricksRouter } from "./routes/tricks.js";
 import dotenv from "dotenv";
 dotenv.config();
 
-const apiKey = process.env.MONGO_DB_API_PASSWORD;
+const apiKey = process.env.MONGO_DB_URI;
 
 const app = express();
 
@@ -18,8 +18,6 @@ app.use(cors());
 app.use("/auth", userRouter);
 app.use("/tricks", tricksRouter);
 
-mongoose.connect(
-  `mongodb+srv://msmithfl:${apiKey}@skate-log.iqtsw2g.mongodb.net/skate-log?retryWrites=true&w=majority`
-);
+mongoose.connect(`${apiKey}`);
 
 app.listen(3001, () => console.log("SERVER STARTED!"));

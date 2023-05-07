@@ -5,6 +5,7 @@ import { useCookies } from "react-cookie";
 import { LoadingSpinner } from "../components/LoadingSpinner";
 import { wishlistTrick } from "../hooks/useWishlistTrick";
 import { saveTrick } from "../hooks/useSaveTrick";
+import { URL } from "../App";
 
 const Home = () => {
   const [cookies, _] = useCookies(["access_token"]);
@@ -46,7 +47,7 @@ const Home = () => {
     const fetchTricks = async () => {
       try {
         setIsLoading(true);
-        const response = await axios.get("http://localhost:3001/tricks");
+        const response = await axios.get(`${URL}/tricks`);
         setTricks(response.data);
         setIsLoading(false);
       } catch (err) {
@@ -59,7 +60,7 @@ const Home = () => {
     const fetchCompletedTricks = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:3001/tricks/completedTricks/ids/${userID}`
+          `${URL}/tricks/completedTricks/ids/${userID}`
         );
         setCompletedTricks(response.data.completedTricks);
       } catch (err) {
@@ -71,7 +72,7 @@ const Home = () => {
     const fetchWishlistTricks = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:3001/tricks/wishlist/ids/${userID}`
+          `${URL}/tricks/wishlist/ids/${userID}`
         );
         setWishlistTricks(response.data.wishlistTricks);
       } catch (err) {

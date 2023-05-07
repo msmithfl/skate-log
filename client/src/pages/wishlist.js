@@ -4,6 +4,7 @@ import axios from "axios";
 import { useCookies } from "react-cookie";
 import { wishlistTrick } from "../hooks/useWishlistTrick";
 import { saveTrick } from "../hooks/useSaveTrick";
+import { URL } from "../App";
 
 const Wishlist = () => {
   const [cookies, _] = useCookies(["access_token"]);
@@ -43,9 +44,7 @@ const Wishlist = () => {
     // wishlist tricks
     const fetchWishlistTricks = async () => {
       try {
-        const response = await axios.get(
-          `http://localhost:3001/tricks/wishlist/${userID}`
-        );
+        const response = await axios.get(`${URL}/tricks/wishlist/${userID}`);
         setWishlistTricks(response.data.wishlistTricks);
       } catch (err) {
         console.error(err);
@@ -55,7 +54,7 @@ const Wishlist = () => {
     const fetchCompletedTricks = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:3001/tricks/completedTricks/ids/${userID}`
+          `${URL}/tricks/completedTricks/ids/${userID}`
         );
         setCompletedTricks(response.data.completedTricks);
       } catch (err) {

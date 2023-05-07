@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useGetUserID } from "../hooks/useGetUserID";
 import axios from "axios";
 import { useCookies } from "react-cookie";
+import { URL } from "../App";
 
 const Landed = () => {
   const [cookies, _] = useCookies(["access_token"]);
@@ -14,7 +15,7 @@ const Landed = () => {
     const fetchCompletedTricks = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:3001/tricks/completedTricks/${userID}`
+          `${URL}/tricks/completedTricks/${userID}`
         );
         setCompletedTricks(response.data.completedTricks);
       } catch (err) {

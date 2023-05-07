@@ -6,6 +6,7 @@ import Auth from "./pages/auth";
 import Wishlist from "./pages/wishlist";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
+export const URL = process.env.REACT_APP_API_KEY;
 
 function App() {
   return (
